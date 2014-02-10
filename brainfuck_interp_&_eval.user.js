@@ -5,7 +5,6 @@
 // @require        https://raw.github.com/einars/js-beautify/master/js/lib/beautify.js
 // @version        1.0.6
 // @include        *
-//
 // ==/UserScript==
 
 function Interpreter(script, input) {
