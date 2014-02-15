@@ -9,6 +9,7 @@
 // @require       https://github.com/sizzlemctwizzle/GM_config/raw/master/gm_config.js
 // @include       http://userscripts.org/scripts/show/82984
 // @include       https://userscripts.org/scripts/show/82984
+// Test webhook
 // ==/UserScript==
 
 var fieldDefs = {
