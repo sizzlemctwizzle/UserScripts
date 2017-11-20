@@ -1,15 +1,21 @@
 // ==UserScript==
 // @name          The GM_config Unit Test
 // @namespace     sizzlemctwizzle
-// @description	  Attempts to test every aspect of GM_config.
-// @version       2.2
+// @description   Attempts to test every aspect of GM_config.
+// @license       MIT
+// @version       2.2.2
 // @grant         GM_getValue
 // @grant         GM_setValue
 // @grant         GM_log
-// @require       https://github.com/sizzlemctwizzle/GM_config/raw/master/gm_config.js
-// @include       http://userscripts.org/scripts/show/82984
-// @include       https://userscripts.org/scripts/show/82984
+// @require       https://openuserjs.org/src/libs/sizzle/GM_config.min.js
+// @include       https://openuserjs.org/scripts/sizzle/The_GM_config_Unit_Test
+// @homepageURL   https://github.com/sizzlemctwizzle/UserScripts/blob/master/gm_config_unit_test.user.js
 // ==/UserScript==
+
+// ==OpenUserJS==
+// @author sizzle
+// @collaborator Marti
+// ==/OpenUserJS==
 
 var fieldDefs = {
     'name': {
@@ -61,7 +67,7 @@ var fieldDefs = {
     'magic': {
         'label': 'Magic Button',
         'type': 'button',
-        'click': function() { 
+        'click': function() {
             alert('Magic works!');
         }
     },
@@ -125,7 +131,7 @@ var fieldDefs = {
     'alertTextField': {
         'label': 'Alert Text',
         'type': 'button',
-        'click': function() { 
+        'click': function() {
             alert(GM_config.fields['labelLess'].toValue());
             GM_config.fields['labelLess'].value = 'Value changed.';
             GM_config.fields['labelLess'].reload();
@@ -146,10 +152,10 @@ var fieldDefs = {
 GM_config.init(
 {
   id: 'GM_config',
-  title: 'Configurable Options Script', 
-  fields: fieldDefs, 
+  title: 'Configurable Options Script',
+  fields: fieldDefs,
   css: '#GM_config_section_1 .config_var, #GM_config_section_2 .config_var, #GM_config_section_3 .config_var { margin: 5% !important;display: inline !important; }',
-  events: 
+  events:
   {
     open: function(doc) {
       doc.getElementById('GM_config_section_header_1').className = 'field_label';
@@ -207,7 +213,7 @@ GM_config.init(
                   input.value = input.value.substr(0, input.size - 1);
               }
             };
-            
+
             // Jump to the next input once one is complete
             // This saves the user a little work
             if (i < format.length - 1) {
@@ -304,7 +310,7 @@ var title = titles[lang];
 var saveButton = {'en': 'Save', 'de': 'Speichern'};
 var closeButton = {'en': 'Close', 'de': 'Schließen'};
 var resetLink = {
-  'en': 'Reset fields to default values', 
+  'en': 'Reset fields to default values',
   'de': 'Felder zurücksetzen auf Standardwerte'
 };
 
@@ -315,7 +321,7 @@ var gmc_trans = new GM_configStruct(
   'fields': fields, // Fields object
   'events':
   {
-    'init': function() 
+    'init': function()
     {
       // You must manually set an unsaved value
       this.fields['lang'].value = lang;
@@ -360,11 +366,9 @@ GM_config.init(
   id: 'GM_config',
   fields:
   {
-    'extra': 
+    'extra':
     {
-
       'label': 'Extra Field',
-
       'type': 'text',
       'default': 'This field was added with a second call to init()'
     },
@@ -372,7 +376,7 @@ GM_config.init(
     {
       'label': 'Open Translation Demo',
       'type': 'button',
-      'click': function() { 
+      'click': function() {
         GM_config.close();
         gmc_trans.open();
       }
