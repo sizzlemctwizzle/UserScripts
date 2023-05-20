@@ -3,19 +3,23 @@
 // @namespace     sizzlemctwizzle
 // @description   Attempts to test every aspect of GM_config.
 // @license       MIT
-// @version       2.2.2
+// @version       2.3.0.1
 // @grant         GM_getValue
 // @grant         GM_setValue
 // @grant         GM_log
 // @require       https://openuserjs.org/src/libs/sizzle/GM_config.min.js
 // @include       https://openuserjs.org/scripts/sizzle/The_GM_config_Unit_Test
 // @homepageURL   https://github.com/sizzlemctwizzle/UserScripts/blob/master/gm_config_unit_test.user.js
+// @updateURL     https://openuserjs.org/meta/sizzle/The_GM_config_Unit_Test.meta.js
 // ==/UserScript==
 
 // ==OpenUserJS==
 // @author sizzle
 // @collaborator Marti
 // ==/OpenUserJS==
+
+/* jshint esversion: 5 */
+/* globals GM_config, GM_configStruct */
 
 var fieldDefs = {
     'name': {
@@ -268,120 +272,126 @@ GM_config.init(
     }
   }
 });
+(async () => {
+  // Retrieve language setting
+  var lang = await GM_config.getValue('lang', 'en');
 
-// Retrieve language setting
-var lang = GM_config.getValue('lang', 'en');
-
-// Fields in different languages
-var langDefs = {
-  'en': // Fields in English
-  {
-    'lang':
+  // Fields in different languages
+  var langDefs = {
+    'en': // Fields in English
     {
-      'label': 'Choose Language',
-      'type': 'select',
-      'options': ['en', 'de'],
-      'save': false // This field's value will NOT be saved
-    }
-  },
-  'de': // Fields in German
-  {
-    'lang':
-    {
-      'label': 'Sprache wählen',
-      'type': 'select',
-      'options': ['en', 'de'],
-      'save': false // This field's value will NOT be saved
-    }
-  }
-};
-
-// Use field definitions for the stored language
-var fields = langDefs[lang];
-
-// The title for the settings panel in different languages
-var titles = {
-  'en': 'Translations Dialog',
-  'de': 'Übersetzungen Dialog'
-};
-var title = titles[lang];
-
-// Translations for the buttons and reset link
-var saveButton = {'en': 'Save', 'de': 'Speichern'};
-var closeButton = {'en': 'Close', 'de': 'Schließen'};
-var resetLink = {
-  'en': 'Reset fields to default values',
-  'de': 'Felder zurücksetzen auf Standardwerte'
-};
-
-var gmc_trans = new GM_configStruct(
-{
-  'id': 'GM_config_trans', // The id used for this instance of GM_config
-  'title': title,
-  'fields': fields, // Fields object
-  'events':
-  {
-    'init': function()
-    {
-      // You must manually set an unsaved value
-      this.fields['lang'].value = lang;
+      'lang':
+      {
+        'label': 'Choose Language',
+        'type': 'select',
+        'options': ['en', 'de'],
+        'save': false // This field's value will NOT be saved
+      }
     },
-    'open': function (doc) {
-      // translate the buttons
-      var config = this;
-      doc.getElementById(config.id + '_saveBtn').textContent = saveButton[lang];
-      doc.getElementById(config.id + '_closeBtn').textContent = closeButton[lang];
-      doc.getElementById(config.id + '_resetLink').textContent = resetLink[lang];
-    },
-    'save': function(values) { // All unsaved values are passed to save
-      for (i in values) {
-        if (i == 'lang' && values[i] != lang) {
-          var config = this;
-          lang = values[i];
+    'de': // Fields in German
+    {
+      'lang':
+      {
+        'label': 'Sprache wählen',
+        'type': 'select',
+        'options': ['en', 'de'],
+        'save': false // This field's value will NOT be saved
+      }
+    }
+  };
 
-          // Use field definitions for the chosen language
-          fields = langDefs[lang];
-          config.fields['lang'].value = lang;
+  // Use field definitions for the stored language
+  var fields = langDefs[lang];
 
-          // Use the title for the chose language
-          title = titles[lang];
+  // The title for the settings panel in different languages
+  var titles = {
+    'en': 'Translations Dialog',
+    'de': 'Übersetzungen Dialog'
+  };
+  var title = titles[lang];
 
-          // Re-initialize GM_config for the language change
-          config.init({ 'id': config.id, title: title, 'fields': fields });
+  // Translations for the buttons and reset link
+  var saveButton = {'en': 'Save', 'de': 'Speichern'};
+  var closeButton = {'en': 'Close', 'de': 'Schließen'};
+  var resetLink = {
+    'en': 'Reset fields to default values',
+    'de': 'Felder zurücksetzen auf Standardwerte'
+  };
 
-          // Refresh the config panel for the new language change
-          config.close();
-          config.open();
+  var gmc_trans = new GM_configStruct(
+  {
+    'id': 'GM_config_trans', // The id used for this instance of GM_config
+    'title': title,
+    'fields': fields, // Fields object
+    'events':
+    {
+      'init': function()
+      {
+        // You must manually set an unsaved value
+        this.fields['lang'].value = lang;
+      },
+      'open': function (doc) {
+        // translate the buttons
+        var config = this;
+        doc.getElementById(config.id + '_saveBtn').textContent = saveButton[lang];
+        doc.getElementById(config.id + '_closeBtn').textContent = closeButton[lang];
+        doc.getElementById(config.id + '_resetLink').textContent = resetLink[lang];
+      },
+      'save': function(values) { // All unsaved values are passed to save
+        for (var i in values) {
+          if (i == 'lang' && values[i] != lang) {
+            var config = this;
+            lang = values[i];
 
-          // Save the chosen language for next time
-          config.setValue('lang', lang);
+            // Use field definitions for the chosen language
+            fields = langDefs[lang];
+            config.fields['lang'].value = lang;
+
+            // Use the title for the chose language
+            title = titles[lang];
+
+            // Re-initialize GM_config for the language change
+            config.init({ 'id': config.id, title: title, 'fields': fields });
+
+            // Refresh the config panel for the new language change
+            config.close();
+            config.open();
+
+            // Save the chosen language for next time
+            config.setValue('lang', lang);
+          }
         }
       }
     }
-  }
-});
+  });
 
-GM_config.init(
-{
-  id: 'GM_config',
-  fields:
+  GM_config.init(
   {
-    'extra':
+    id: 'GM_config',
+    'events':
     {
-      'label': 'Extra Field',
-      'type': 'text',
-      'default': 'This field was added with a second call to init()'
+      'init': function()
+      {
+        GM_config.open();
+      }
     },
-    'openTrans':
+    fields:
     {
-      'label': 'Open Translation Demo',
-      'type': 'button',
-      'click': function() {
-        GM_config.close();
-        gmc_trans.open();
+      'extra':
+      {
+        'label': 'Extra Field',
+        'type': 'text',
+        'default': 'This field was added with a second call to init()'
+      },
+      'openTrans':
+      {
+        'label': 'Open Translation Demo',
+        'type': 'button',
+        'click': function() {
+          GM_config.close();
+          gmc_trans.open();
+        }
       }
     }
-  }
-});
-GM_config.open();
-
+  });
+})();
