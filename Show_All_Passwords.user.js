@@ -4,7 +4,7 @@
 // @description   Show all passwords as plain-text. Use at your own risk!
 // @copyright     2023, sizzle (https://openuserjs.org/users/sizzle)
 // @license       MIT
-// @version       1.0
+// @version       1.1
 // @updateURL     https://openuserjs.org/meta/sizzle/Show_All_Passwords.meta.js
 // @downloadURL   https://openuserjs.org/install/sizzle/Show_All_Passwords.user.js
 // @match         https://*
