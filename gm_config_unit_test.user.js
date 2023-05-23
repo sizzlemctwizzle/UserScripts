@@ -3,7 +3,7 @@
 // @namespace     sizzlemctwizzle
 // @description   Attempts to test every aspect of GM_config.
 // @license       MIT
-// @version       2.3.0.2
+// @version       2.3.0.3
 // @grant         GM_getValue
 // @grant         GM_setValue
 // @grant         GM.getValue
@@ -136,9 +136,12 @@ var fieldDefs = {
         'label': 'Alert Text',
         'type': 'button',
         'click': function() {
-            alert(GM_config.fields['labelLess'].toValue());
-            GM_config.fields['labelLess'].value = 'Value changed.';
-            GM_config.fields['labelLess'].reload();
+            var value = GM_config.fields['labelLess'].toValue();
+            if (value != null) {
+              alert(GM_config.fields['labelLess'].toValue());
+              GM_config.fields['labelLess'].value = 'Value changed.';
+              GM_config.fields['labelLess'].reload();
+            } else alert('null field has already been changed and forgotten.');
         }
     },
     'customCSS': {
