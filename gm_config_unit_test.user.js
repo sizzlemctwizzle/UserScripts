@@ -138,7 +138,7 @@ var fieldDefs = {
         'click': function() {
             var value = GM_config.fields['labelLess'].toValue();
             if (value != null) {
-              alert(GM_config.fields['labelLess'].toValue());
+              alert(value);
               GM_config.fields['labelLess'].value = 'Value changed.';
               GM_config.fields['labelLess'].reload();
             } else alert('null field has already been changed and forgotten.');
