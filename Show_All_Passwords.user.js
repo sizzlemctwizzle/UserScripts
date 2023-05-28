@@ -2,11 +2,8 @@
 // @name          Show All Passwords
 // @namespace     sizzlemctwizzle
 // @description   Show all passwords as plain-text. Use at your own risk!
-// @copyright     2023, sizzle (https://openuserjs.org/users/sizzle)
 // @license       MIT
-// @version       1.3
-// @updateURL     https://openuserjs.org/meta/sizzle/Show_All_Passwords.meta.js
-// @downloadURL   https://openuserjs.org/install/sizzle/Show_All_Passwords.user.js
+// @version       1.4
 // @match         https://*
 // @match         http://*
 // @match         https://*/*
@@ -20,7 +17,8 @@ const showPasswords = () => document.querySelectorAll('input[type=password]')
 // Callback function to execute when mutations are observed
 const callback = (mutationList, observer) => {
   for (const mutation of mutationList) {
-    if (mutation.type === "childList") {
+    if (mutation.type === 'childList'
+        || mutation.type === "attributes") {
       showPasswords();
     }
   }
@@ -30,5 +28,5 @@ const callback = (mutationList, observer) => {
 const observer = new MutationObserver(callback);
 
 // Start observing the target node for configured mutations
-observer.observe(document, { attributes: false, childList: true, subtree: true });
-showPasswords();
+observer.observe(document, { attributes: true, childList: true, subtree: true });
+window.addEventListener('DOMContentLoaded', event => showPasswords());
